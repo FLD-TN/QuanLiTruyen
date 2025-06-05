@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="quality_options">
+        <item>Thấp</item>
+        <item>Trung bình</item>
+        <item>Cao</item>
+    </array>
+</resources>
