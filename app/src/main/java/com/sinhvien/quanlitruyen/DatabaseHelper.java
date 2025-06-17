@@ -14,13 +14,14 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CBZDatabase";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // TABLE TRUYEN
     private static final String TABLE_TRUYEN = "Truyen";
     private static final String COL_MA_TRUYEN = "MaTruyen";
     private static final String COL_TEN_TRUYEN = "TenTruyen";
     private static final String COL_MO_TA = "MoTa";
+    private static final String COL_FILE_HASH = "FileHash";
 
     // TABLE CHUONG
     private static final String TABLE_CHUONG = "Chuong";
@@ -39,7 +40,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String CREATE_TRUYEN = "CREATE TABLE IF NOT EXISTS " + TABLE_TRUYEN + "("
                 + COL_MA_TRUYEN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COL_TEN_TRUYEN + " TEXT NOT NULL,"
-                + COL_MO_TA + " TEXT)";
+                + COL_MO_TA + " TEXT,"
+                + COL_FILE_HASH + " TEXT)";
         db.execSQL(CREATE_TRUYEN);
 
         // Bảng chương
@@ -50,21 +52,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_SO_CHUONG + " INTEGER,"
                 + "FOREIGN KEY (" + COL_MA_TRUYEN_FK + ") REFERENCES " + TABLE_TRUYEN + "(" + COL_MA_TRUYEN + ") ON DELETE CASCADE)";
         db.execSQL(CREATE_CHUONG);
+
+        String CREATE_CBZ = "CREATE TABLE IF NOT EXISTS cbz_files (" +
+                "file_hash TEXT, " +
+                "uri TEXT, " +
+                "image_path TEXT)";
+        db.execSQL(CREATE_CBZ);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHUONG);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRUYEN);
+        db.execSQL("DROP TABLE IF EXISTS cbz_files");
         onCreate(db);
     }
 
     // --- CRUD TRUYEN ---
-    public long insertTruyen(String tenTruyen, String moTa) {
+    public long insertTruyen(String tenTruyen, String moTa, String fileHash) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_TEN_TRUYEN, tenTruyen);
         values.put(COL_MO_TA, moTa);
+        values.put(COL_FILE_HASH, fileHash);
         return db.insert(TABLE_TRUYEN, null, values);
     }
 
@@ -77,7 +87,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int maTruyen = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MA_TRUYEN));
                 String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
                 String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
-                list.add(new Truyen(maTruyen, ten, moTa));
+                String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
+                list.add(new Truyen(maTruyen, ten, moTa, hash));
             } while (cursor.moveToNext());
         }
         cursor.close();
