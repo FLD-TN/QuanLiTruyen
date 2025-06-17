@@ -95,6 +95,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public Truyen getTruyen(int maTruyen) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_TRUYEN, null, COL_MA_TRUYEN + "=?",
+                new String[]{String.valueOf(maTruyen)}, null, null, null);
+        Truyen truyen = null;
+        if (cursor.moveToFirst()) {
+            String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
+            String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
+            String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
+            truyen = new Truyen(maTruyen, ten, moTa, hash);
+        }
+        cursor.close();
+        return truyen;
+    }
+
     // --- CRUD CHUONG ---
     public long insertChuong(int maTruyen, String tenChuong, int soChuong) {
         SQLiteDatabase db = this.getWritableDatabase();

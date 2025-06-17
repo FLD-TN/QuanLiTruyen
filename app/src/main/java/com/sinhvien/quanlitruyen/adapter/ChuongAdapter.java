@@ -14,9 +14,15 @@ import java.util.List;
 
 public class ChuongAdapter extends RecyclerView.Adapter<ChuongAdapter.ChuongViewHolder> {
     private List<Chuong> chuongList;
+    private OnChuongClickListener listener;
 
-    public ChuongAdapter(List<Chuong> chuongList) {
+    public interface OnChuongClickListener {
+        void onChuongClick(Chuong chuong);
+    }
+
+    public ChuongAdapter(List<Chuong> chuongList, OnChuongClickListener listener) {
         this.chuongList = chuongList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -31,6 +37,11 @@ public class ChuongAdapter extends RecyclerView.Adapter<ChuongAdapter.ChuongView
         Chuong chuong = chuongList.get(position);
         holder.txtTenChuong.setText(chuong.getTenChuong());
         holder.txtSoChuong.setText("Chương: " + chuong.getSoChuong());
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onChuongClick(chuong);
+            }
+        });
     }
 
     @Override

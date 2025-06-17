@@ -48,7 +48,11 @@ public class ChuongListActivity extends AppCompatActivity {
 
     private void loadChuong() {
         List<Chuong> chuongList = dbHelper.getAllChuongByTruyen(maTruyen);
-        ChuongAdapter adapter = new ChuongAdapter(chuongList);
+        ChuongAdapter adapter = new ChuongAdapter(chuongList, chuong -> {
+            Intent intent = new Intent(this, DocChuongActivity.class);
+            intent.putExtra("MaTruyen", maTruyen);
+            startActivity(intent);
+        });
         recyclerChuong.setAdapter(adapter);
     }
 }

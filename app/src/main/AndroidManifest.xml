@@ -27,6 +27,7 @@
         <activity android:name=".activity.AddTruyenActivity" android:exported="false" />
         <activity android:name=".activity.ChuongListActivity" android:exported="false" />
         <activity android:name=".activity.AddChuongActivity" android:exported="false" />
+        <activity android:name=".activity.DocChuongActivity" android:exported="false" />
     </application>
 
 </manifest>
