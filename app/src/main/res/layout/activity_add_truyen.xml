@@ -8,12 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+
     <EditText
         android:id="@+id/edtMoTa"
         android:hint="Mô tả"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="3"/>
+
+    <Button
+        android:id="@+id/btnChonCbz"
+        android:text="Chọn file CBZ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtFileName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chưa chọn file"/>
 
     <Button
         android:id="@+id/btnLuu"
