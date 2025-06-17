@@ -6,17 +6,28 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.sinhvien.quanlitruyen.model.Chuong;
+import com.sinhvien.quanlitruyen.model.Truyen;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CBZDatabase";
-    private static final int DATABASE_VERSION = 1;
-    private static final String TABLE_CBZ_FILES = "cbz_files";
-    private static final String KEY_ID = "id";
-    private static final String KEY_FILE_HASH = "file_hash";
-    private static final String KEY_URI = "uri";
-    private static final String KEY_IMAGE_PATH = "image_path";
+    private static final int DATABASE_VERSION = 2;
+
+    // TABLE TRUYEN
+    private static final String TABLE_TRUYEN = "Truyen";
+    private static final String COL_MA_TRUYEN = "MaTruyen";
+    private static final String COL_TEN_TRUYEN = "TenTruyen";
+    private static final String COL_MO_TA = "MoTa";
+
+    // TABLE CHUONG
+    private static final String TABLE_CHUONG = "Chuong";
+    private static final String COL_MA_CHUONG = "MaChuong";
+    private static final String COL_MA_TRUYEN_FK = "MaTruyen";
+    private static final String COL_TEN_CHUONG = "TenChuong";
+    private static final String COL_SO_CHUONG = "SoChuong";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,43 +35,90 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CBZ_FILES_TABLE = "CREATE TABLE " + TABLE_CBZ_FILES + "("
-                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_FILE_HASH + " TEXT,"
-                + KEY_URI + " TEXT,"
-                + KEY_IMAGE_PATH + " TEXT)";
-        db.execSQL(CREATE_CBZ_FILES_TABLE);
+        // Bảng truyện
+        String CREATE_TRUYEN = "CREATE TABLE IF NOT EXISTS " + TABLE_TRUYEN + "("
+                + COL_MA_TRUYEN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COL_TEN_TRUYEN + " TEXT NOT NULL,"
+                + COL_MO_TA + " TEXT)";
+        db.execSQL(CREATE_TRUYEN);
+
+        // Bảng chương
+        String CREATE_CHUONG = "CREATE TABLE IF NOT EXISTS " + TABLE_CHUONG + "("
+                + COL_MA_CHUONG + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COL_MA_TRUYEN_FK + " INTEGER,"
+                + COL_TEN_CHUONG + " TEXT,"
+                + COL_SO_CHUONG + " INTEGER,"
+                + "FOREIGN KEY (" + COL_MA_TRUYEN_FK + ") REFERENCES " + TABLE_TRUYEN + "(" + COL_MA_TRUYEN + ") ON DELETE CASCADE)";
+        db.execSQL(CREATE_CHUONG);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CBZ_FILES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHUONG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRUYEN);
         onCreate(db);
     }
 
-    public void saveCBZFile(String fileHash, String uri, List<String> imagePaths) {
+    // --- CRUD TRUYEN ---
+    public long insertTruyen(String tenTruyen, String moTa) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CBZ_FILES, KEY_FILE_HASH + "=?", new String[]{fileHash}); // Xóa bản ghi cũ nếu có
+        ContentValues values = new ContentValues();
+        values.put(COL_TEN_TRUYEN, tenTruyen);
+        values.put(COL_MO_TA, moTa);
+        return db.insert(TABLE_TRUYEN, null, values);
+    }
 
-        for (String path : imagePaths) {
-            ContentValues values = new ContentValues();
-            values.put(KEY_FILE_HASH, fileHash);
-            values.put(KEY_URI, uri);
-            values.put(KEY_IMAGE_PATH, path);
-            db.insert(TABLE_CBZ_FILES, null, values);
+    public List<Truyen> getAllTruyen() {
+        List<Truyen> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TRUYEN, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int maTruyen = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MA_TRUYEN));
+                String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
+                String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
+                list.add(new Truyen(maTruyen, ten, moTa));
+            } while (cursor.moveToNext());
         }
-        db.close();
+        cursor.close();
+        return list;
+    }
+
+    // --- CRUD CHUONG ---
+    public long insertChuong(int maTruyen, String tenChuong, int soChuong) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_MA_TRUYEN_FK, maTruyen);
+        values.put(COL_TEN_CHUONG, tenChuong);
+        values.put(COL_SO_CHUONG, soChuong);
+        return db.insert(TABLE_CHUONG, null, values);
+    }
+
+    public List<Chuong> getAllChuongByTruyen(int maTruyen) {
+        List<Chuong> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CHUONG + " WHERE " + COL_MA_TRUYEN_FK + "=?", new String[]{String.valueOf(maTruyen)});
+        if (cursor.moveToFirst()) {
+            do {
+                int maChuong = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MA_CHUONG));
+                String tenChuong = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_CHUONG));
+                int soChuong = cursor.getInt(cursor.getColumnIndexOrThrow(COL_SO_CHUONG));
+                list.add(new Chuong(maChuong, maTruyen, tenChuong, soChuong));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
     }
 
     public List<String> getImagePaths(String fileHash) {
         List<String> imagePaths = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CBZ_FILES, new String[]{KEY_IMAGE_PATH},
-                KEY_FILE_HASH + "=?", new String[]{fileHash}, null, null, null);
+        Cursor cursor = db.query("cbz_files", new String[]{"image_path"},
+                "file_hash=?", new String[]{fileHash}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
-                imagePaths.add(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGE_PATH)));
+                imagePaths.add(cursor.getString(cursor.getColumnIndexOrThrow("image_path")));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -68,16 +126,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return imagePaths;
     }
 
-    public String getUri(String fileHash) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CBZ_FILES, new String[]{KEY_URI},
-                KEY_FILE_HASH + "=?", new String[]{fileHash}, null, null, null);
-        String uri = "";
-        if (cursor.moveToFirst()) {
-            uri = cursor.getString(cursor.getColumnIndexOrThrow(KEY_URI));
+    public void saveCBZFile(String fileHash, String uri, List<String> imagePaths) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("cbz_files", "file_hash=?", new String[]{fileHash}); // Xóa bản ghi cũ nếu có
+
+        for (String path : imagePaths) {
+            ContentValues values = new ContentValues();
+            values.put("file_hash", fileHash);
+            values.put("uri", uri);
+            values.put("image_path", path);
+            db.insert("cbz_files", null, values);
         }
-        cursor.close();
         db.close();
-        return uri;
     }
+
+
 }

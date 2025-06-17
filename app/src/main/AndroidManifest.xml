@@ -18,13 +18,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ImageDetailActivity"
-            android:exported="false" />
+        <activity android:name=".ImageDetailActivity" android:exported="false" />
+        <!-- Đăng ký các activity mới -->
+        <activity android:name=".activity.TruyenListActivity" android:exported="false" />
+        <activity android:name=".activity.AddTruyenActivity" android:exported="false" />
+        <activity android:name=".activity.ChuongListActivity" android:exported="false" />
+        <activity android:name=".activity.AddChuongActivity" android:exported="false" />
     </application>
 
 </manifest>

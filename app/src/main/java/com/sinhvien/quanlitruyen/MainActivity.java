@@ -23,6 +23,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.sinhvien.quanlitruyen.activity.TruyenListActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -60,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setInitialPrefetchItemCount(5);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemViewCacheSize(20);
+
+        Button btnOpenTruyen = findViewById(R.id.btnOpenTruyen);
+        btnOpenTruyen.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TruyenListActivity.class);
+            startActivity(intent);
+        });
 
         // Nút chọn file CBZ
         Button btnPick = findViewById(R.id.button_pick);

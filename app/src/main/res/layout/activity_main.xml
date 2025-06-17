@@ -23,6 +23,12 @@
             android:layout_marginStart="16dp"
             android:entries="@array/quality_options" />
 
+
+        <Button
+            android:id="@+id/btnOpenTruyen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quản lý truyện" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
