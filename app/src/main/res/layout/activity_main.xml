@@ -1,39 +1,53 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="8dp"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:title="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:text="Chọn file CBZ"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar" />
 
-        <Button
-            android:id="@+id/button_pick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn file CBZ" />
+    <Spinner
+        android:id="@+id/spinner_quality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:entries="@array/quality_options"
+        app:layout_constraintStart_toEndOf="@id/button_pick"
+        app:layout_constraintTop_toTopOf="@id/button_pick"
+        app:layout_constraintBottom_toBottomOf="@id/button_pick" />
 
-        <Spinner
-            android:id="@+id/spinner_quality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:entries="@array/quality_options" />
-
-
-        <Button
-            android:id="@+id/btnOpenTruyen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Quản lý truyện" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpenTruyen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Quản lý truyện"
+        app:layout_constraintStart_toEndOf="@id/spinner_quality"
+        app:layout_constraintTop_toTopOf="@id/button_pick"
+        app:layout_constraintBottom_toBottomOf="@id/button_pick" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-</LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/button_pick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
