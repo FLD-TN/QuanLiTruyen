@@ -63,11 +63,20 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPickImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Chọn ảnh bìa"
+        app:layout_constraintTop_toBottomOf="@id/txtFileName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLuu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Lưu"
-        app:layout_constraintTop_toBottomOf="@id/txtFileName"
+        app:layout_constraintTop_toBottomOf="@id/btnPickImg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
