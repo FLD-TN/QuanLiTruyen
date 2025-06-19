@@ -6,6 +6,8 @@ public class Truyen {
     private String moTa;
     private String fileHash;
 
+
+
     public Truyen(int maTruyen, String tenTruyen, String moTa, String fileHash) {
         this.maTruyen = maTruyen;
         this.tenTruyen = tenTruyen;

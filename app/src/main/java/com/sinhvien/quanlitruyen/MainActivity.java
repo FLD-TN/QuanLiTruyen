@@ -69,52 +69,52 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Nút chọn file CBZ
-        Button btnPick = findViewById(R.id.button_pick);
-        btnPick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkStoragePermission();
-            }
-        });
+//        // Nút chọn file CBZ
+//        Button btnPick = findViewById(R.id.button_pick);
+//        btnPick.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                checkStoragePermission();
+//            }
+        };
 
         // Khởi tạo Spinner chất lượng ảnh
-        Spinner qualitySpinner = findViewById(R.id.spinner_quality);
-        qualitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] qualityOptions = getResources().getStringArray(R.array.quality_options);
-                selectedQuality = qualityOptions[position].equals("Thấp") ? "Low" :
-                        qualityOptions[position].equals("Cao") ? "High" : "Medium";
-                getSharedPreferences("AppSettings", MODE_PRIVATE).edit()
-                        .putString("image_quality", selectedQuality)
-                        .apply();
-                // Cập nhật lại RecyclerView nếu đã có dữ liệu
-                if (imageAdapter != null) {
-                    imageAdapter.setQuality(selectedQuality);
-                    imageAdapter.notifyDataSetChanged();
-                }
-            }
+//        Spinner qualitySpinner = findViewById(R.id.spinner_quality);
+//        qualitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String[] qualityOptions = getResources().getStringArray(R.array.quality_options);
+//                selectedQuality = qualityOptions[position].equals("Thấp") ? "Low" :
+//                        qualityOptions[position].equals("Cao") ? "High" : "Medium";
+//                getSharedPreferences("AppSettings", MODE_PRIVATE).edit()
+//                        .putString("image_quality", selectedQuality)
+//                        .apply();
+//                // Cập nhật lại RecyclerView nếu đã có dữ liệu
+//                if (imageAdapter != null) {
+//                    imageAdapter.setQuality(selectedQuality);
+//                    imageAdapter.notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {}
+//        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        // Tải chất lượng đã lưu
-        selectedQuality = getSharedPreferences("AppSettings", MODE_PRIVATE)
-                .getString("image_quality", "Medium");
-        int spinnerPosition = selectedQuality.equals("Low") ? 0 :
-                selectedQuality.equals("High") ? 2 : 1;
-        qualitySpinner.setSelection(spinnerPosition);
-
-        // Khởi tạo ProgressDialog
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Đang giải nén...");
-        progressDialog.setCancelable(false);
-
-        // Kiểm tra và tải imagePaths từ SQLite
-        loadCachedImagePaths();
-    }
+//        // Tải chất lượng đã lưu
+//        selectedQuality = getSharedPreferences("AppSettings", MODE_PRIVATE)
+//                .getString("image_quality", "Medium");
+//        int spinnerPosition = selectedQuality.equals("Low") ? 0 :
+//                selectedQuality.equals("High") ? 2 : 1;
+//        qualitySpinner.setSelection(spinnerPosition);
+//
+//        // Khởi tạo ProgressDialog
+//        progressDialog = new ProgressDialog(this);
+//        progressDialog.setMessage("Đang giải nén...");
+//        progressDialog.setCancelable(false);
+//
+//        // Kiểm tra và tải imagePaths từ SQLite
+//        loadCachedImagePaths();
+//    }
 
     private void loadCachedImagePaths() {
         extractFolder = new File(getExternalFilesDir(null), "ExtractedCBZ");

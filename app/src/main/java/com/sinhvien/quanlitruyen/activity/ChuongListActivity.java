@@ -55,4 +55,10 @@ public class ChuongListActivity extends AppCompatActivity {
         });
         recyclerChuong.setAdapter(adapter);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
