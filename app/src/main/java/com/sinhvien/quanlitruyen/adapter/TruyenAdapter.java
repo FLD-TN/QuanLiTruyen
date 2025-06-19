@@ -3,6 +3,7 @@ package com.sinhvien.quanlitruyen.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,8 +37,9 @@ public class TruyenAdapter extends RecyclerView.Adapter<TruyenAdapter.TruyenView
     public void onBindViewHolder(@NonNull TruyenViewHolder holder, int position) {
         Truyen truyen = truyenList.get(position);
         holder.txtTenTruyen.setText(truyen.getTenTruyen());
-        holder.txtMoTa.setText(truyen.getMoTa());
         holder.itemView.setOnClickListener(v -> listener.onTruyenClick(truyen));
+        holder.imageView.setImageResource(truyen.getImageResId());
+
     }
 
     @Override
@@ -46,11 +48,12 @@ public class TruyenAdapter extends RecyclerView.Adapter<TruyenAdapter.TruyenView
     }
 
     public static class TruyenViewHolder extends RecyclerView.ViewHolder {
-        TextView txtTenTruyen, txtMoTa;
+        TextView txtTenTruyen;
+        ImageView imageView;
         public TruyenViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTenTruyen = itemView.findViewById(R.id.txtTenTruyen);
-            txtMoTa = itemView.findViewById(R.id.txtMoTa);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

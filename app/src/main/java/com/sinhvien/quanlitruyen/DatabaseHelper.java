@@ -88,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
                 String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
                 String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
-                list.add(new Truyen(maTruyen, ten, moTa, hash));
+                list.add(new Truyen(maTruyen, ten, moTa, hash, false, 0, 0));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -104,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
             String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
             String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
-            truyen = new Truyen(maTruyen, ten, moTa, hash);
+            truyen = new Truyen(maTruyen, ten, moTa, hash, false, 0, 0);
         }
         cursor.close();
         return truyen;
@@ -165,8 +165,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         db.close();
     }
-    
-    
+
+    public List<Truyen> getRecentTruyen() {
+        // Tạm thời trả về 10 truyện đầu tiên (giả lập đọc gần đây)
+        List<Truyen> all = getAllTruyen();
+        return all.size() > 10 ? all.subList(0, 10) : all;
+    }
 
 
 }
