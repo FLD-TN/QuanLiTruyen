@@ -16,14 +16,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CBZDatabase";
     private static final int DATABASE_VERSION = 3;
 
-    // TABLE TRUYEN
+    //  TRUYEN
     private static final String TABLE_TRUYEN = "Truyen";
     private static final String COL_MA_TRUYEN = "MaTruyen";
     private static final String COL_TEN_TRUYEN = "TenTruyen";
     private static final String COL_MO_TA = "MoTa";
     private static final String COL_FILE_HASH = "FileHash";
 
-    // TABLE CHUONG
+    //  CHUONG
     private static final String TABLE_CHUONG = "Chuong";
     private static final String COL_MA_CHUONG = "MaChuong";
     private static final String COL_MA_TRUYEN_FK = "MaTruyen";

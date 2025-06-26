@@ -3,6 +3,7 @@ package com.sinhvien.quanlitruyen;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sinhvien.quanlitruyen.activity.ChuongListActivity;
+import com.sinhvien.quanlitruyen.activity.SearchActivity;
 import com.sinhvien.quanlitruyen.activity.TruyenListActivity;
 import com.sinhvien.quanlitruyen.adapter.TruyenAdapter;
 import com.sinhvien.quanlitruyen.model.Truyen;
@@ -64,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements TruyenAdapter.OnT
 
         btnUser.setOnClickListener(v ->
                 Toast.makeText(this, "Thông tin tài khoản (chưa cài)", Toast.LENGTH_SHORT).show());
+
+        Button btnSearchEngine = findViewById(R.id.btnSearchEngine);
+        btnSearchEngine.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadRecentTruyen() {

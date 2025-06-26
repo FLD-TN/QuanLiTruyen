@@ -44,6 +44,12 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
+    <Button
+        android:id="@+id/btnSearchEngine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tìm truyện online" />
+
     <!-- CardView nổi bật cho menu -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
