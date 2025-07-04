@@ -16,14 +16,16 @@ import com.sinhvien.quanlitruyen.R;
 
 public class AddTruyenActivity extends AppCompatActivity {
     private static final int PICK_CBZ_FILE = 1;
+    private static final int PICK_COVER_IMAGE = 2;
 
-    private EditText edtTenTruyen, edtMoTa;
-    private Button btnLuu, btnChonCbz;
+    private EditText edtTenTruyen, edtMoTa, edtImgPath;
+    private Button btnLuu, btnChonCbz, btnPickImg;
     private TextView txtFileName;
     private DatabaseHelper dbHelper;
     private ProgressDialog progressDialog;
     private String fileHash;
     private java.io.File extractFolder;
+    private String coverImagePath = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +35,23 @@ public class AddTruyenActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         edtTenTruyen = findViewById(R.id.edtTenTruyen);
         edtMoTa = findViewById(R.id.edtMoTa);
+        edtImgPath = findViewById(R.id.edtImgPath);
         btnLuu = findViewById(R.id.btnLuu);
         btnChonCbz = findViewById(R.id.btnChonCbz);
+        btnPickImg = findViewById(R.id.btnPickImg);
         txtFileName = findViewById(R.id.txtFileName);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Đang giải nén...");
+        progressDialog.setMessage("\u0110ang gi\u1ea3i n\u00e9n...");
         progressDialog.setCancelable(false);
 
         btnChonCbz.setOnClickListener(v -> pickCBZFile());
+        btnPickImg.setOnClickListener(v -> pickCoverImage());
 
         btnLuu.setOnClickListener(v -> {
             String ten = edtTenTruyen.getText().toString().trim();
             String moTa = edtMoTa.getText().toString().trim();
+
             if (ten.isEmpty()) {
                 edtTenTruyen.setError("Nhập tên truyện");
                 return;
@@ -54,7 +60,13 @@ public class AddTruyenActivity extends AppCompatActivity {
                 Toast.makeText(this, "Vui lòng chọn file CBZ", Toast.LENGTH_SHORT).show();
                 return;
             }
-            dbHelper.insertTruyen(ten, moTa, fileHash);
+
+            if (!edtImgPath.getText().toString().trim().isEmpty()) {
+                coverImagePath = edtImgPath.getText().toString().trim();
+            }
+
+            dbHelper.insertTruyen(ten, moTa, fileHash, coverImagePath); // ✅ fix lỗi
+
             Toast.makeText(this, "Đã lưu truyện mới!", Toast.LENGTH_SHORT).show();
             finish();
         });
@@ -64,18 +76,33 @@ public class AddTruyenActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
-        startActivityForResult(Intent.createChooser(intent, "Chọn file CBZ"), PICK_CBZ_FILE);
+        startActivityForResult(Intent.createChooser(intent, "Ch\u1ecdn file CBZ"), PICK_CBZ_FILE);
+    }
+
+    private void pickCoverImage() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intent, "Ch\u1ecdn \u1ea3nh b\u00eca"), PICK_COVER_IMAGE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_CBZ_FILE && resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
-            if (uri != null) {
-                getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                txtFileName.setText(uri.getLastPathSegment());
-                new ExtractCBZTask().execute(uri);
+            if (requestCode == PICK_CBZ_FILE) {
+                if (uri != null) {
+                    getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    txtFileName.setText(uri.getLastPathSegment());
+                    new ExtractCBZTask().execute(uri);
+                }
+            } else if (requestCode == PICK_COVER_IMAGE) {
+                if (uri != null) {
+                    getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    coverImagePath = uri.toString();
+                    edtImgPath.setText(coverImagePath);
+                }
             }
         }
     }
@@ -161,9 +188,9 @@ public class AddTruyenActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             progressDialog.dismiss();
             if (!success) {
-                Toast.makeText(AddTruyenActivity.this, "Không tìm thấy ảnh trong file CBZ.", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddTruyenActivity.this, "Khong tim thay anh trong file CBZ.", Toast.LENGTH_LONG).show();
                 fileHash = null;
-                txtFileName.setText("Chưa chọn file");
+
             }
         }
     }

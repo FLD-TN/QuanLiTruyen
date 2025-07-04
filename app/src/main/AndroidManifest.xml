@@ -32,6 +32,8 @@
         <activity android:name=".activity.DocChuongActivity" android:exported="false" />
         <activity android:name=".activity.WebViewActivity" android:exported="false" />
         <activity android:name=".activity.SearchActivity" android:exported="false" />
+        <activity android:name=".activity.EditTruyenActivity" android:exported="false"/>
+
     </application>
 
 </manifest>

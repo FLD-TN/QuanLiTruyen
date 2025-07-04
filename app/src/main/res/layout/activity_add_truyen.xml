@@ -1,83 +1,98 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:title="Thêm truyện"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutTenTruyen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/topAppBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtTenTruyen"
-            android:hint="Tên truyện"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutMoTa"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/layoutTenTruyen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtMoTa"
-            android:hint="Mô tả"
-            android:layout_width="match_parent"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:lines="3" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:title="Thêm truyện"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnChonCbz"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Chọn file CBZ"
-        app:layout_constraintTop_toBottomOf="@id/layoutMoTa"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutTenTruyen"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/topAppBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/txtFileName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Chưa chọn file"
-        app:layout_constraintTop_toBottomOf="@id/btnChonCbz"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTenTruyen"
+                android:hint="Tên truyện"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnPickImg"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Chọn ảnh bìa"
-        app:layout_constraintTop_toBottomOf="@id/txtFileName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutMoTa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/layoutTenTruyen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLuu"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Lưu"
-        app:layout_constraintTop_toBottomOf="@id/btnPickImg"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtMoTa"
+                android:hint="Mô tả"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="3" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnChonCbz"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Chọn file CBZ"
+            app:layout_constraintTop_toBottomOf="@id/layoutMoTa"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/txtFileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Chưa chọn file"
+            app:layout_constraintTop_toBottomOf="@id/btnChonCbz"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPickImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Chọn ảnh bìa"
+            app:layout_constraintTop_toBottomOf="@id/txtFileName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutImgPath"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btnPickImg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtImgPath"
+                android:hint="Đường dẫn ảnh bìa (tùy chọn)"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLuu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Lưu"
+            app:layout_constraintTop_toBottomOf="@id/layoutImgPath"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

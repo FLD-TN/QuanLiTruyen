@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "CBZDatabase";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     //  TRUYEN
     private static final String TABLE_TRUYEN = "Truyen";
@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_TEN_TRUYEN = "TenTruyen";
     private static final String COL_MO_TA = "MoTa";
     private static final String COL_FILE_HASH = "FileHash";
+    private static final String COL_COVER_IMAGE = "CoverImage";
 
     //  CHUONG
     private static final String TABLE_CHUONG = "Chuong";
@@ -41,7 +42,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_MA_TRUYEN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COL_TEN_TRUYEN + " TEXT NOT NULL,"
                 + COL_MO_TA + " TEXT,"
-                + COL_FILE_HASH + " TEXT)";
+                + COL_FILE_HASH + " TEXT,"
+                + COL_COVER_IMAGE + " TEXT)";
         db.execSQL(CREATE_TRUYEN);
 
         // Bảng chương
@@ -62,19 +64,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHUONG);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TRUYEN);
-        db.execSQL("DROP TABLE IF EXISTS cbz_files");
-        onCreate(db);
+        if (oldVersion < 5) {
+            db.execSQL("ALTER TABLE " + TABLE_TRUYEN + " ADD COLUMN " + COL_COVER_IMAGE + " TEXT");
+        }
     }
 
+
     // --- CRUD TRUYEN ---
-    public long insertTruyen(String tenTruyen, String moTa, String fileHash) {
+    public long insertTruyen(String tenTruyen, String moTa, String fileHash, String coverImagePath) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COL_TEN_TRUYEN, tenTruyen);
         values.put(COL_MO_TA, moTa);
         values.put(COL_FILE_HASH, fileHash);
+        values.put(COL_COVER_IMAGE, coverImagePath);
         return db.insert(TABLE_TRUYEN, null, values);
     }
 
@@ -88,7 +91,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
                 String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
                 String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
-                list.add(new Truyen(maTruyen, ten, moTa, hash, false, 0, 0));
+                String cover = cursor.getString(cursor.getColumnIndexOrThrow(COL_COVER_IMAGE));
+                list.add(new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -104,7 +108,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String ten = cursor.getString(cursor.getColumnIndexOrThrow(COL_TEN_TRUYEN));
             String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
             String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
-            truyen = new Truyen(maTruyen, ten, moTa, hash, false, 0, 0);
+            String cover = cursor.getString(cursor.getColumnIndexOrThrow(COL_COVER_IMAGE));
+            truyen = new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover);
         }
         cursor.close();
         return truyen;
@@ -123,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Chuong> getAllChuongByTruyen(int maTruyen) {
         List<Chuong> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CHUONG + " WHERE " + COL_MA_TRUYEN_FK + "=?", new String[]{String.valueOf(maTruyen)});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CHUONG + " WHERE " + COL_MA_TRUYEN_FK + "= ?", new String[]{String.valueOf(maTruyen)});
         if (cursor.moveToFirst()) {
             do {
                 int maChuong = cursor.getInt(cursor.getColumnIndexOrThrow(COL_MA_CHUONG));
@@ -154,7 +159,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void saveCBZFile(String fileHash, String uri, List<String> imagePaths) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("cbz_files", "file_hash=?", new String[]{fileHash}); // Xóa bản ghi cũ nếu có
+        db.delete("cbz_files", "file_hash=?", new String[]{fileHash});
 
         for (String path : imagePaths) {
             ContentValues values = new ContentValues();
@@ -167,10 +172,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Truyen> getRecentTruyen() {
-        // Tạm thời trả về 10 truyện đầu tiên (giả lập đọc gần đây)
         List<Truyen> all = getAllTruyen();
         return all.size() > 10 ? all.subList(0, 10) : all;
     }
 
+    public boolean deleteTruyen(int maTruyen) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete("Truyen", "MaTruyen = ?", new String[]{String.valueOf(maTruyen)});
+        return result > 0;
+    }
 
+    public boolean updateTruyen(int maTruyen, String tenTruyen, String moTa, String coverImagePath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("TenTruyen", tenTruyen);
+        values.put("MoTa", moTa);
+        values.put("CoverImage", coverImagePath);
+
+        int result = db.update("Truyen", values, "MaTruyen = ?", new String[]{String.valueOf(maTruyen)});
+        return result > 0;
+    }
 }
