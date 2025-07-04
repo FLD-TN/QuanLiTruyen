@@ -92,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
                 String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
                 String cover = cursor.getString(cursor.getColumnIndexOrThrow(COL_COVER_IMAGE));
-                list.add(new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover));
+                list.add(new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover,null));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -109,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String moTa = cursor.getString(cursor.getColumnIndexOrThrow(COL_MO_TA));
             String hash = cursor.getString(cursor.getColumnIndexOrThrow(COL_FILE_HASH));
             String cover = cursor.getString(cursor.getColumnIndexOrThrow(COL_COVER_IMAGE));
-            truyen = new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover);
+            truyen = new Truyen(maTruyen, ten, moTa, hash, false, 0, 0, cover,null);
         }
         cursor.close();
         return truyen;
@@ -192,4 +192,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int result = db.update("Truyen", values, "MaTruyen = ?", new String[]{String.valueOf(maTruyen)});
         return result > 0;
     }
+
+    public String getNoteForTruyen(int maTruyen) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT GhiChu FROM Truyen WHERE MaTruyen=?", new String[]{String.valueOf(maTruyen)});
+        if (cursor.moveToFirst()) {
+            String note = cursor.getString(0);
+            cursor.close();
+            return note != null ? note : "";
+        }
+        cursor.close();
+        return "";
+    }
+
+    public void updateNoteForTruyen(int maTruyen, String note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("GhiChu", note);
+        db.update("Truyen", values, "MaTruyen=?", new String[]{String.valueOf(maTruyen)});
+    }
+
 }

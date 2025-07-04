@@ -55,13 +55,21 @@
            >
 
             <ImageView
+                android:id="@+id/btnNote"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:contentDescription="Ghi chú"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_flag" />
+
+            <ImageView
                 android:id="@+id/btnEdit"
                 android:layout_width="30dp"
                 android:layout_height="35dp"
                 android:contentDescription="Sửa"
                 android:src="@drawable/ic_edit"
-                android:layout_marginEnd="70dp"
-                android:layout_marginStart="15dp"/>
+                android:layout_marginEnd="35dp"
+                android:layout_marginStart="30dp"/>
 
             <ImageView
                 android:id="@+id/btnDelete"
@@ -70,6 +78,8 @@
                 android:contentDescription="Xoá"
                 android:src="@drawable/ic_delete"
                  />
+
+
         </LinearLayout>
     </LinearLayout>
 
