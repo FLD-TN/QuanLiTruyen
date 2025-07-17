@@ -4,7 +4,7 @@
 
     <EditText
         android:id="@+id/edtSearch"
-        android:hint="Nhập tên truyện..."
+        android:hint="Tìm kiếm..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

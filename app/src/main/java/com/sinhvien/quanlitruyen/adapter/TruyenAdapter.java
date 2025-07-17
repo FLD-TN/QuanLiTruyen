@@ -1,151 +1,157 @@
 package com.sinhvien.quanlitruyen.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.InputType;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputEditText;
 import com.sinhvien.quanlitruyen.DatabaseHelper;
 import com.sinhvien.quanlitruyen.R;
+import com.sinhvien.quanlitruyen.activity.ChuongListActivity;
 import com.sinhvien.quanlitruyen.model.Truyen;
 
-import java.io.File;
 import java.util.List;
 
 public class TruyenAdapter extends RecyclerView.Adapter<TruyenAdapter.TruyenViewHolder> {
     private Context context;
     private List<Truyen> truyenList;
     private OnTruyenActionListener listener;
-    private boolean isManageMode;
+    private boolean enableActions;
     private DatabaseHelper dbHelper;
 
-    public interface OnTruyenActionListener {
-        void onTruyenDeleted();
-        void onTruyenEdited(int maTruyen);
-    }
-
-    public TruyenAdapter(Context context, List<Truyen> truyenList, OnTruyenActionListener listener, boolean isManageMode) {
+    public TruyenAdapter(Context context, List<Truyen> truyenList, OnTruyenActionListener listener, boolean enableActions) {
         this.context = context;
         this.truyenList = truyenList;
         this.listener = listener;
-        this.isManageMode = isManageMode;
+        this.enableActions = enableActions;
+        this.dbHelper = new DatabaseHelper(context);
+    }
+
+    public TruyenAdapter(Context context, List<Truyen> truyenList) {
+        this(context, truyenList, null, false);
         this.dbHelper = new DatabaseHelper(context);
     }
 
     @NonNull
     @Override
     public TruyenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_truyen, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_truyen, parent, false);
         return new TruyenViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TruyenViewHolder holder, int position) {
         Truyen truyen = truyenList.get(position);
-        holder.txtTenTruyen.setText(truyen.getTenTruyen());
-        holder.txtMoTa.setText(truyen.getMoTa());
+        holder.textViewTenTruyen.setText(truyen.getTenTruyen());
+        holder.textViewMoTa.setText(truyen.getMoTa());
 
-        String coverPath = truyen.getCoverImagePath();
-        if (coverPath != null && !coverPath.isEmpty()) {
-            if (coverPath.startsWith("/")) {
-                Glide.with(context).load(new File(coverPath)).into(holder.imageView);
+        String coverImagePath = truyen.getCoverImagePath();
+        if (coverImagePath != null && coverImagePath.startsWith("res://")) {
+            String resourceName = coverImagePath.replace("res://", "");
+            int resId = context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
+            Glide.with(context)
+                    .load(resId)
+                    .placeholder(R.drawable.anh_bia_manga_onepice)
+                    .error(R.drawable.analytics_icon)
+                    .into(holder.imgTruyen);
+        } else {
+            Glide.with(context)
+                    .load(coverImagePath)
+                    .placeholder(R.drawable.anh_bia_manga_onepice)
+                    .error(R.drawable.analytics_icon)
+                    .into(holder.imgTruyen);
+        }
+
+        holder.imgTruyen.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onTruyenImageClicked(truyen.getMaTruyen());
             } else {
-                int resId = context.getResources().getIdentifier(coverPath, "drawable", context.getPackageName());
-                if (resId != 0) {
-                    holder.imageView.setImageResource(resId);
-                } else {
-                    holder.imageView.setImageResource(truyen.getImageResId());
-                }
+                Intent intent = new Intent(context, ChuongListActivity.class);
+                intent.putExtra("MaTruyen", truyen.getMaTruyen());
+                context.startActivity(intent);
             }
-        } else {
-            holder.imageView.setImageResource(truyen.getImageResId());
-        }
+        });
 
-        // Show/Hide quản lý
-        if (isManageMode) {
-            holder.btnEdit.setVisibility(View.VISIBLE);
+        holder.btnRate.setOnClickListener(v -> showRatingPopup(truyen.getMaTruyen(), truyen.getNote(), position));
+
+        if (enableActions) {
             holder.btnDelete.setVisibility(View.VISIBLE);
-        } else {
-            holder.btnEdit.setVisibility(View.GONE);
-            holder.btnDelete.setVisibility(View.GONE);
-        }
-
-        // Xử lý nút sửa
-        holder.btnEdit.setOnClickListener(view -> {
-            if (listener != null) listener.onTruyenEdited(truyen.getMaTruyen());
-        });
-
-        // Xử lý nút xoá
-        holder.btnDelete.setOnClickListener(view -> {
-            new AlertDialog.Builder(context)
-                    .setTitle("Xoá truyện")
-                    .setMessage("Bạn có chắc chắn muốn xoá truyện này không?")
-                    .setPositiveButton("Xoá", (dialog, which) -> {
-                        dbHelper.deleteTruyen(truyen.getMaTruyen());
-                        if (listener != null) listener.onTruyenDeleted();
-                    })
-                    .setNegativeButton("Huỷ", null)
-                    .show();
-        });
-
-        holder.btnFlag.setOnClickListener(v -> {
-            // Inflate popup_note.xml
-            View popupView = LayoutInflater.from(context).inflate(R.layout.popup_note, null);
-            EditText edtNote = popupView.findViewById(R.id.edtNote);
-            Button btnSave = popupView.findViewById(R.id.btnSaveNote);
-
-            // Gán note hiện tại nếu có (lưu bằng SharedPreferences)
-            SharedPreferences prefs = context.getSharedPreferences("TruyenNotes", Context.MODE_PRIVATE);
-            String key = "note_" + truyen.getMaTruyen();
-            String currentNote = prefs.getString(key, "");
-            edtNote.setText(currentNote);
-
-            // Tạo dialog
-            AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setView(popupView)
-                    .create();
-
-            btnSave.setOnClickListener(view -> {
-                String newNote = edtNote.getText().toString();
-                prefs.edit().putString(key, newNote).apply();
-                Toast.makeText(context, "Đã lưu ghi chú", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+            holder.btnEdit.setVisibility(View.VISIBLE);
+            holder.btnDelete.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onTruyenDeleted(truyen.getMaTruyen());
+                }
             });
+            holder.btnEdit.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onTruyenEdited(truyen.getMaTruyen());
+                }
+            });
+        } else {
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.btnEdit.setVisibility(View.GONE);
+        }
+    }
 
-            dialog.show();
+    private void showRatingPopup(int maTruyen, String currentNote, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.popup_note, null);
+        TextInputEditText edtNote = dialogView.findViewById(R.id.edtNote);
+        Button btnSaveNote = dialogView.findViewById(R.id.btnSaveNote);
+
+        edtNote.setText(currentNote != null ? currentNote : "");
+
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+
+        btnSaveNote.setOnClickListener(v -> {
+            String note = edtNote.getText().toString().trim();
+            dbHelper.updateTruyenNote(maTruyen, note);
+            truyenList.get(position).setNote(note);
+            notifyItemChanged(position);
+            dialog.dismiss();
         });
+
+        dialog.show();
     }
 
     @Override
     public int getItemCount() {
-        return truyenList.size();
+        return truyenList != null ? truyenList.size() : 0;
     }
 
-    public static class TruyenViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        TextView txtTenTruyen, txtMoTa;
-        ImageView btnEdit, btnDelete, btnFlag;
+    public interface OnTruyenActionListener {
+        void onTruyenDeleted(int maTruyen);
+        void onTruyenEdited(int maTruyen);
+        void onTruyenImageClicked(int maTruyen);
+    }
 
-        public TruyenViewHolder(@NonNull View itemView) {
+    static class TruyenViewHolder extends RecyclerView.ViewHolder {
+        ImageView imgTruyen;
+        TextView textViewTenTruyen;
+        TextView textViewMoTa;
+        Button btnDelete;
+        Button btnEdit;
+        Button btnRate;
+
+        TruyenViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
-            txtTenTruyen = itemView.findViewById(R.id.txtTenTruyen);
-            txtMoTa = itemView.findViewById(R.id.txtMoTa);
-            btnEdit = itemView.findViewById(R.id.btnEdit);
+            imgTruyen = itemView.findViewById(R.id.imgTruyen);
+            textViewTenTruyen = itemView.findViewById(R.id.txtTenTruyen);
+            textViewMoTa = itemView.findViewById(R.id.txtMoTa);
             btnDelete = itemView.findViewById(R.id.btnDelete);
-            btnFlag = itemView.findViewById(R.id.btnNote);
+            btnEdit = itemView.findViewById(R.id.btnEdit);
+            btnRate = itemView.findViewById(R.id.btnRate);
         }
     }
 }

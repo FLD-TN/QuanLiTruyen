@@ -10,16 +10,14 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="Danh sách chương"
+        app:title="Thống kê đọc"
         app:titleTextColor="#FFFFFF"
         android:background="?attr/colorPrimary" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerChuong"
+    <WebView
+        android:id="@+id/webViewStats"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:clipToPadding="false" />
+        android:layout_weight="1" />
 
 </LinearLayout>

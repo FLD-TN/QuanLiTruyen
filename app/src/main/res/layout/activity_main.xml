@@ -26,12 +26,12 @@
                 android:id="@+id/edtSearch"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded_edittext"
                 android:hint="Tìm Kiếm"
                 android:inputType="text"
-                android:paddingHorizontal="12dp"
-                android:layout_marginEnd="10dp"/>
+                android:paddingHorizontal="12dp" />
 
             <ImageView
                 android:id="@+id/btnUser"
@@ -62,10 +62,10 @@
             android:id="@+id/gridMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
             android:columnCount="2"
             android:padding="5dp"
-            android:background="@android:color/white"
-            android:rowCount="2">
+            android:rowCount="3">
 
             <LinearLayout
                 android:id="@+id/itemQuanLi"
@@ -153,6 +153,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Thống kê thời gian" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnManageTheLoai"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_theloai" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Quản lý thể loại" />
             </LinearLayout>
         </GridLayout>
     </androidx.cardview.widget.CardView>

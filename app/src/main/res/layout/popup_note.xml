@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:elevation="4dp">
+    android:background="#FFFFFF">
 
     <TextView
-        android:id="@+id/tvNoteTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ghi chú cho truyện"
-        android:textStyle="bold"
+        android:text="Đánh giá truyện"
         android:textSize="18sp"
-        android:gravity="center"
-        android:paddingBottom="8dp"/>
+        android:textStyle="bold"
+        android:textColor="#333333" />
 
-    <EditText
-        android:id="@+id/edtNote"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:hint="Nhập ghi chú..."
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:background="@android:drawable/editbox_background"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
+      >
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:maxLines="5" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lưu ghi chú"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="16dp"
+        android:text="Lưu" />
+
 </LinearLayout>

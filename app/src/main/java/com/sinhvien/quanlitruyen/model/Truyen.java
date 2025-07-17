@@ -4,47 +4,47 @@ public class Truyen {
     private int maTruyen;
     private String tenTruyen;
     private String moTa;
-    private String fileHash;
-    private int imageResId;
-    private boolean yeuThich;
-    private int tongThoiGianDoc;
     private String coverImagePath;
+    private String fileHash;
+    private boolean isFavorite;
+    private int soChuong;
+    private int maTheLoai;
     private String note;
 
-
-    public Truyen(int maTruyen, String tenTruyen, String moTa, String fileHash, boolean yeuThich, int tongThoiGianDoc, int imageResId) {
-        this.maTruyen = maTruyen;
-        this.tenTruyen = tenTruyen;
-        this.moTa = moTa;
-        this.fileHash = fileHash;
-        this.yeuThich = yeuThich;
-        this.tongThoiGianDoc = tongThoiGianDoc;
-        this.imageResId = imageResId;
-        this.coverImagePath = null;
+    // Constructor không tham số
+    public Truyen() {
     }
 
-    public Truyen(int maTruyen, String tenTruyen, String moTa, String fileHash, boolean yeuThich, int tongThoiGianDoc, int imageResId, String coverImagePath, String note) {
+    // Constructor đầy đủ
+    public Truyen(int maTruyen, String tenTruyen, String moTa, String coverImagePath, String fileHash, boolean isFavorite, int soChuong, int maTheLoai, String note) {
         this.maTruyen = maTruyen;
         this.tenTruyen = tenTruyen;
         this.moTa = moTa;
-        this.fileHash = fileHash;
-        this.yeuThich = yeuThich;
-        this.tongThoiGianDoc = tongThoiGianDoc;
-        this.imageResId = imageResId;
         this.coverImagePath = coverImagePath;
+        this.fileHash = fileHash;
+        this.isFavorite = isFavorite;
+        this.soChuong = soChuong;
+        this.maTheLoai = maTheLoai;
         this.note = note;
-    }
-    public int getMaTruyen() { return maTruyen; }
-    public String getTenTruyen() { return tenTruyen; }
-    public String getMoTa() { return moTa; }
-    public String getFileHash() { return fileHash; }
-    public int getImageResId() { return imageResId; }
-    public String getCoverImagePath() { return coverImagePath; }
-    public String getNote() {
-        return note;
     }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
+    // Getter và setter
+    public int getMaTruyen() { return maTruyen; }
+    public void setMaTruyen(int maTruyen) { this.maTruyen = maTruyen; }
+    public String getTenTruyen() { return tenTruyen; }
+    public void setTenTruyen(String tenTruyen) { this.tenTruyen = tenTruyen; }
+    public String getMoTa() { return moTa; }
+    public void setMoTa(String moTa) { this.moTa = moTa; }
+    public String getCoverImagePath() { return coverImagePath; }
+    public void setCoverImagePath(String coverImagePath) { this.coverImagePath = coverImagePath; }
+    public String getFileHash() { return fileHash; }
+    public void setFileHash(String fileHash) { this.fileHash = fileHash; }
+    public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
+    public int getSoChuong() { return soChuong; }
+    public void setSoChuong(int soChuong) { this.soChuong = soChuong; }
+    public int getMaTheLoai() { return maTheLoai; }
+    public void setMaTheLoai(int maTheLoai) { this.maTheLoai = maTheLoai; }
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 }

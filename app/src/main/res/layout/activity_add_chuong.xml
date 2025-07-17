@@ -1,56 +1,31 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/edtTenChuong"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:title="Thêm chương"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:hint="Tên chương"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutTenChuong"
-        android:layout_width="0dp"
+    <EditText
+        android:id="@+id/edtSoChuong"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/topAppBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:hint="Số chương"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtTenChuong"
-            android:hint="Tên chương"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layoutSoChuong"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/layoutTenChuong"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtSoChuong"
-            android:hint="Số chương"
-            android:inputType="number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnLuu"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lưu"
-        app:layout_constraintTop_toBottomOf="@id/layoutSoChuong"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_gravity="end" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

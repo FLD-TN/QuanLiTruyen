@@ -33,6 +33,14 @@
         <activity android:name=".activity.WebViewActivity" android:exported="false" />
         <activity android:name=".activity.SearchActivity" android:exported="false" />
         <activity android:name=".activity.EditTruyenActivity" android:exported="false"/>
+        <activity android:name=".activity.TheLoaiManagementActivity" android:exported="false" />
+        <activity android:name=".activity.ReadingHistoryActivity" android:exported="false" />
+        <activity android:name=".activity.StatisticsActivity">
+            <meta-data
+                android:name="android.webkit.WebView.EnableSafeBrowsing"
+                android:value="true" />
+        </activity>
+
 
     </application>
 
