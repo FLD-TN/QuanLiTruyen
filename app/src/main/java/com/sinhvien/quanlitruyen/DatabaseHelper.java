@@ -466,6 +466,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("Truyen", "MaTruyen = ?", new String[]{String.valueOf(maTruyen)});
     }
 
+
+    // CRUD thể loại
+
     public List<TheLoai> getAllTheLoai() {
         List<TheLoai> theLoaiList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
