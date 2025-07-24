@@ -1,25 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    tools:context=".activity.DocChuongActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewImages"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerImages"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="4dp" />
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/tvPageIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:padding="8dp"
-        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"
         android:background="#80000000"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="6dp"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:text="Trang 1/1" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="1 / 15" />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/btnChangeLayout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Đổi chế độ đọc"
+        android:src="@drawable/ic_change_layout"
+        app:layout_constraintBottom_toTopOf="@+id/tvPageIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/white" />
+
+    <ImageButton
+        android:id="@+id/btnChangeQuality"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Đổi chất lượng ảnh"
+        android:src="@drawable/ic_quality"
+        app:layout_constraintBottom_toTopOf="@+id/tvPageIndicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

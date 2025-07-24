@@ -495,4 +495,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("TheLoai", "MaTheLoai = ?", new String[]{String.valueOf(maTheLoai)});
     }
+
+
+    // CRUD CHƯƠNG
+    public int updateChuongName(int maChuong, String newName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("TenChuong", newName);
+        return db.update("Chuong", values, "MaChuong = ?", new String[]{String.valueOf(maChuong)});
+    }
 }

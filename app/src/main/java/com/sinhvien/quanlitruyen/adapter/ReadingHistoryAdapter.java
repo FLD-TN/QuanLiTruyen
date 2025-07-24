@@ -12,7 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sinhvien.quanlitruyen.R;
 import com.sinhvien.quanlitruyen.model.ReadingHistory;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class ReadingHistoryAdapter extends RecyclerView.Adapter<ReadingHistoryAdapter.HistoryViewHolder> {
     private Context context;
@@ -39,13 +44,37 @@ public class ReadingHistoryAdapter extends RecyclerView.Adapter<ReadingHistoryAd
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         ReadingHistory history = historyList.get(position);
-        holder.tvHistory.setText("Đã đọc truyện \"" + history.getTenTruyen() + "\" - " + history.getReadTimestamp());
+
+        // THAY ĐỔI LỚN: Chuyển đổi và định dạng lại timestamp
+        String formattedTime = formatTimestamp(history.getReadTimestamp());
+
+        holder.tvHistory.setText("Đã đọc truyện \"" + history.getTenTruyen() + "\" lúc " + formattedTime);
         holder.itemView.setOnClickListener(v -> listener.onHistoryClicked(history.getMaTruyen()));
     }
 
     @Override
     public int getItemCount() {
         return historyList != null ? historyList.size() : 0;
+    }
+
+    // HÀM MỚI: Dùng để chuyển đổi múi giờ và định dạng ngày tháng
+    private String formatTimestamp(String utcTimestamp) {
+        // Định dạng đầu vào từ SQLite (UTC)
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        inputFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        // Định dạng đầu ra mong muốn (Giờ Việt Nam)
+        SimpleDateFormat outputFormat = new SimpleDateFormat("HH:mm 'ngày' dd/MM/yyyy", Locale.getDefault());
+        outputFormat.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+
+        try {
+            Date date = inputFormat.parse(utcTimestamp);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Nếu có lỗi, trả về chuỗi gốc
+            return utcTimestamp;
+        }
     }
 
     static class HistoryViewHolder extends RecyclerView.ViewHolder {

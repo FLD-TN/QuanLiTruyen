@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,13 +19,15 @@ import java.util.List;
 public class ChuongAdapter extends RecyclerView.Adapter<ChuongAdapter.ChuongViewHolder> {
     private Context context;
     private List<Chuong> chuongList;
-    private OnItemClickListener listener;
+    private OnChuongActionListener listener; // Sửa tên listener
 
-    public interface OnItemClickListener {
-        void onItemClick(Chuong chuong);
+    // Sửa lại interface để có nhiều hành động
+    public interface OnChuongActionListener {
+        void onChuongClick(Chuong chuong);
+        void onEditChuongClick(Chuong chuong);
     }
 
-    public ChuongAdapter(Context context, List<Chuong> chuongList, OnItemClickListener listener) {
+    public ChuongAdapter(Context context, List<Chuong> chuongList, OnChuongActionListener listener) {
         this.context = context;
         this.chuongList = chuongList;
         this.listener = listener;
@@ -39,28 +43,36 @@ public class ChuongAdapter extends RecyclerView.Adapter<ChuongAdapter.ChuongView
     @Override
     public void onBindViewHolder(@NonNull ChuongViewHolder holder, int position) {
         Chuong chuong = chuongList.get(position);
-        holder.textViewSoChuong.setText(String.format("Ch. %d", chuong.getSoChuong()));
         holder.textViewTenChuong.setText(chuong.getTenChuong());
-        holder.itemView.setOnClickListener(v -> {
+
+        holder.layoutItem.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onItemClick(chuong);
+                listener.onChuongClick(chuong);
+            }
+        });
+
+        holder.btnEditChuong.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onEditChuongClick(chuong);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return chuongList != null ? chuongList.size() : 0;
+        return chuongList.size();
     }
 
     static class ChuongViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewSoChuong;
         TextView textViewTenChuong;
+        ImageButton btnEditChuong;
+        LinearLayout layoutItem;
 
         ChuongViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewSoChuong = itemView.findViewById(R.id.textViewSoChuong);
             textViewTenChuong = itemView.findViewById(R.id.textViewTenChuong);
+            btnEditChuong = itemView.findViewById(R.id.btnEditChuong);
+            layoutItem = itemView.findViewById(R.id.layout_item_chuong);
         }
     }
 }

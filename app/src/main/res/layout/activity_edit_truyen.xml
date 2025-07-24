@@ -1,127 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:background="#F5F5F5">
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Chỉnh sửa truyện"
-        app:titleTextColor="#FFFFFF"
-        android:background="?attr/colorPrimary" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:hint="Tên truyện">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtTenTruyen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Chỉnh sửa truyện"
+            app:titleTextColor="#FFFFFF"
+            android:background="?attr/colorPrimary"
+            android:layout_margin="-16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin cơ bản"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:hint="Mô tả">
+            android:layout_marginTop="8dp"
+            android:hint="Tên truyện">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTenTruyen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Mô tả">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtMoTa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDeleteMoTa"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Xóa"
-            app:buttonStyle="@style/Widget.MaterialComponents.Button.TextButton" />
+            android:layout_marginTop="8dp"
+            android:hint="Đường dẫn ảnh bìa">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtManualCoverPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnSelectCover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Chọn ảnh bìa mới" />
+
+        <Button
+            android:id="@+id/btnSelectTheLoai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Chọn thể loại" />
+
+        <Button
+            android:id="@+id/btnLuuThongTin"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Lưu thông tin cơ bản" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnSelectCBZ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="1. Chọn file CBZ mới" />
+
+        <TextView
+            android:id="@+id/tvCbzStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:textColor="#008000" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="2. Nhập tên Arc/Phần (tùy chọn)">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtTenArc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="3. Nhập tổng số chương">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtSoChuong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btnTaoLaiChuong"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:text="4. Áp dụng và Tạo lại toàn bộ chương" />
 
     </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:hint="Đường dẫn ảnh bìa (hoặc res://tên_drawable)">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtManualCoverPath"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSelectCover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Chọn ảnh bìa" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:hint="Số chương">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtSoChuong"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSelectTheLoai"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Chọn thể loại" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSelectCBZ"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Chọn file CBZ" />
-
-    <TextView
-        android:id="@+id/tvCbzStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        android:textColor="#FF0000" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLuu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Lưu" />
-
-</LinearLayout>
+</ScrollView>

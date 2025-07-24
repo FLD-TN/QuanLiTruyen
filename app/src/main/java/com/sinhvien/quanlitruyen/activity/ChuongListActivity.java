@@ -2,8 +2,12 @@ package com.sinhvien.quanlitruyen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,14 +61,46 @@ public class ChuongListActivity extends AppCompatActivity {
         if (chuongList.isEmpty()) {
             Toast.makeText(this, "Không có chương nào", Toast.LENGTH_SHORT).show();
         }
-        adapter = new ChuongAdapter(this, chuongList, chuong -> {
-            Intent intent = new Intent(ChuongListActivity.this, DocChuongActivity.class);
-            intent.putExtra("MaChuong", chuong.getMaChuong());
-            intent.putExtra("MaTruyen", maTruyen);
-            startActivity(intent);
+
+        // Khởi tạo adapter với listener mới
+        adapter = new ChuongAdapter(this, chuongList, new ChuongAdapter.OnChuongActionListener() {
+            @Override
+            public void onChuongClick(Chuong chuong) {
+                Intent intent = new Intent(ChuongListActivity.this, DocChuongActivity.class);
+                intent.putExtra("MaChuong", chuong.getMaChuong());
+                intent.putExtra("MaTruyen", maTruyen);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onEditChuongClick(Chuong chuong) {
+                showEditChuongNameDialog(chuong);
+            }
         });
         recyclerChuong.setAdapter(adapter);
     }
+
+    // Phương thức mới để hiển thị dialog
+    private void showEditChuongNameDialog(final Chuong chuong) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_edit_chuong_name, null);
+        final EditText edtNewName = dialogView.findViewById(R.id.edtNewChuongName);
+        edtNewName.setText(chuong.getTenChuong());
+
+        builder.setView(dialogView)
+                .setPositiveButton("Lưu", (dialog, id) -> {
+                    String newName = edtNewName.getText().toString().trim();
+                    if (!newName.isEmpty() && !newName.equals(chuong.getTenChuong())) {
+                        dbHelper.updateChuongName(chuong.getMaChuong(), newName);
+                        Toast.makeText(ChuongListActivity.this, "Đã đổi tên chương", Toast.LENGTH_SHORT).show();
+                        loadChuong(); // Tải lại danh sách để cập nhật giao diện
+                    }
+                })
+                .setNegativeButton("Hủy", (dialog, id) -> dialog.cancel());
+        builder.create().show();
+    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
