@@ -1,15 +1,13 @@
-# 📖 Quản Lí Truyện - Manga Manager
+<img width="385" height="824" alt="Screenshot 2025-07-29 173922" src="https://github.com/user-attachments/assets/01e95426-bdfb-4587-91b7-ec2d29e79858" /># 📖 Quản Lí Truyện - Manga Manager
 
 This is a personal Android application project built with Java, designed as a powerful offline manga/comic reader and library management tool. The application allows users to import comics from `.cbz` files, manage their own library, customize the reading experience, and track their personal progress.
 
 ## ✨ Demo & Screenshots
 
 For example:
-| Main Screen | Chapter List | Reader View |
+| Main Screen | Manga List | Reader View |
 | :---: | :---: | :---: |
-| <img width="441" height="305" alt="image" src="https://github.com/user-attachments/assets/5d28a352-a301-412c-8550-337af20e2b7a" />| 
- | 
- |
+|<img width="385" height="824" alt="Screenshot 2025-07-29 173922" src="https://github.com/user-attachments/assets/18894e83-f03c-4386-97ab-96b6cbcc86aa" />|<img width="415" height="839" alt="Screenshot 2025-07-29 173933" src="https://github.com/user-attachments/assets/53705232-65d0-4b46-9328-9b6ddc9be0f2" />|<img width="428" height="830" alt="Screenshot 2025-07-29 184026" src="https://github.com/user-attachments/assets/0f17d0cf-c757-4919-9731-c141095c114b" />|
 
 
 ## 🚀 Key Features
