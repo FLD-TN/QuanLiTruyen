@@ -4,7 +4,6 @@ This is a personal Android application project built with Java, designed as a po
 
 ## ✨ Demo & Screenshots
 
-For example:
 | Main Screen | Manga List | Reader View |
 | :---: | :---: | :---: |
 |<img width="385" height="824" alt="Screenshot 2025-07-29 173922" src="https://github.com/user-attachments/assets/18894e83-f03c-4386-97ab-96b6cbcc86aa" />|<img width="415" height="839" alt="Screenshot 2025-07-29 173933" src="https://github.com/user-attachments/assets/53705232-65d0-4b46-9328-9b6ddc9be0f2" />|<img width="428" height="830" alt="Screenshot 2025-07-29 184026" src="https://github.com/user-attachments/assets/0f17d0cf-c757-4919-9731-c141095c114b" />|
